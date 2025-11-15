@@ -2,13 +2,37 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #f0f0f5;
-}
-#desktop {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+button {
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  background-color: #007aff;
+  color: white;
+  cursor: pointer;
+}
+
+#desktop {
   padding: 20px;
 }
+
+.apps {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  justify-content: center;
+}
+
 .app-icon {
   width: 80px;
   height: 80px;
