@@ -1,22 +1,22 @@
 const CACHE_NAME = 'dosos26-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/user.html',
-  '/signup.js',
-  '/userMain.js',
-  '/styles.css',
-  '/manifest.json'
+    '/',
+    '/index.html',
+    '/user.html',
+    '/signup.js',
+    '/userMain.js',
+    '/styles.css',
+    '/manifest.json'
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    );
 });
 
 self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => response || fetch(e.request))
-  );
+    e.respondWith(
+        caches.match(e.request).then(response => response || fetch(e.request))
+    );
 });
