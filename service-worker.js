@@ -3,9 +3,9 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/user.html',
-  '/styles.css',
-  '/main.js',
+  '/signup.js',
   '/userMain.js',
+  '/styles.css',
   '/manifest.json'
 ];
 
