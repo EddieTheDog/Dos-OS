@@ -1,7 +1,7 @@
 {
   "name": "DOS OS 26",
   "short_name": "DOS26",
-  "start_url": "/?home=true",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007aff",
