@@ -1,20 +1,20 @@
-// Load stored user info from localStorage
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('uid') || localStorage.getItem('userId');
+// Get user data from localStorage
+const userId = localStorage.getItem('userId');
+const username = localStorage.getItem('username');
 const screenWidth = localStorage.getItem('screenWidth');
 const screenHeight = localStorage.getItem('screenHeight');
 const userAgent = localStorage.getItem('userAgent');
 
-// Save permanent data
-localStorage.setItem('userId', userId);
-localStorage.setItem('screenWidth', screenWidth);
-localStorage.setItem('screenHeight', screenHeight);
-localStorage.setItem('userAgent', userAgent);
+// If no user data, redirect back to signup
+if(!userId || !username) {
+  alert("No account found. Please create an account.");
+  window.location.href = '/index.html';
+}
 
-// Render the desktop with apps
+// Render the desktop
 const desktop = document.getElementById('desktop');
 desktop.innerHTML = `
-  <h2>Hello user ${userId}!</h2>
+  <h2>Welcome, ${username}!</h2>
   <p>Screen: ${screenWidth} x ${screenHeight}</p>
   <p>Browser: ${userAgent}</p>
   <div class="apps">
@@ -22,6 +22,7 @@ desktop.innerHTML = `
     <div class="app-icon" onclick="openApp('calendar')">📅 Calendar</div>
     <div class="app-icon" onclick="openApp('settings')">⚙️ Settings</div>
   </div>
+  <button id="deleteAccount">Delete Account</button>
 `;
 
 function openApp(app) {
@@ -36,7 +37,15 @@ function openApp(app) {
   }
 }
 
-// Register Service Worker for offline support
+// Delete account (clears localStorage)
+document.getElementById('deleteAccount').addEventListener('click', () => {
+  if(confirm("Are you sure you want to delete your account? This will remove all your data.")) {
+    localStorage.clear();
+    window.location.href = '/index.html';
+  }
+});
+
+// Register service worker for offline PWA
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/service-worker.js')
     .then(() => console.log('Service Worker Registered'))
