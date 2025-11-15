@@ -1,51 +1,62 @@
-// Get user data from localStorage
+// Load user data
 const userId = localStorage.getItem('userId');
-const username = localStorage.getItem('username');
-const screenWidth = localStorage.getItem('screenWidth');
-const screenHeight = localStorage.getItem('screenHeight');
-const userAgent = localStorage.getItem('userAgent');
+const name = localStorage.getItem('name');
+const firstLaunch = localStorage.getItem('firstLaunch');
 
-// If no user data, redirect back to signup
-if(!userId || !username) {
+if(!userId || !name){
   alert("No account found. Please create an account.");
   window.location.href = '/index.html';
 }
 
-// Render the desktop
 const desktop = document.getElementById('desktop');
-desktop.innerHTML = `
-  <h2>Welcome, ${username}!</h2>
-  <p>Screen: ${screenWidth} x ${screenHeight}</p>
-  <p>Browser: ${userAgent}</p>
-  <div class="apps">
-    <div class="app-icon" onclick="openApp('notes')">📝 Notes</div>
-    <div class="app-icon" onclick="openApp('calendar')">📅 Calendar</div>
-    <div class="app-icon" onclick="openApp('settings')">⚙️ Settings</div>
-  </div>
-  <button id="deleteAccount">Delete Account</button>
-`;
 
-function openApp(app) {
-  if(app === 'notes') {
-    let notes = localStorage.getItem('notes') || '';
-    let newNotes = prompt('Your Notes:', notes);
+if(firstLaunch === 'true'){
+  desktop.innerHTML = `
+    <h2>Welcome to your brand new OS, ${name}!</h2>
+    <p>You successfully created your account.</p>
+    <p>Enjoy DOS OS 26!</p>
+    <button id="continue">Continue to your OS</button>
+  `;
+  document.getElementById('continue').addEventListener('click', () => {
+    localStorage.setItem('firstLaunch', 'false');
+    loadDesktop();
+  });
+} else {
+  loadDesktop();
+}
+
+function loadDesktop(){
+  desktop.innerHTML = `
+    <h2>Hello, ${name}</h2>
+    <div class="apps">
+      <div class="app-icon" onclick="openApp('notes')">📝 Notes</div>
+      <div class="app-icon" onclick="openApp('calendar')">📅 Calendar</div>
+      <div class="app-icon" onclick="openApp('settings')">⚙️ Settings</div>
+    </div>
+    <button id="deleteAccount">Delete Account</button>
+  `;
+
+  document.getElementById('deleteAccount').addEventListener('click', () => {
+    if(confirm("Delete your account and reset OS?")) {
+      localStorage.clear();
+      window.location.href = '/index.html';
+    }
+  });
+}
+
+function openApp(app){
+  if(app === 'notes'){
+    const notes = localStorage.getItem('notes') || '';
+    const newNotes = prompt('Your Notes:', notes);
     if(newNotes !== null) localStorage.setItem('notes', newNotes);
-  } else if(app === 'calendar') {
+  } else if(app === 'calendar'){
     alert('Calendar coming soon!');
-  } else if(app === 'settings') {
+  } else if(app === 'settings'){
     alert('Settings coming soon!');
   }
 }
 
-// Delete account (clears localStorage)
-document.getElementById('deleteAccount').addEventListener('click', () => {
-  if(confirm("Are you sure you want to delete your account? This will remove all your data.")) {
-    localStorage.clear();
-    window.location.href = '/index.html';
-  }
-});
-
-// Register service worker for offline PWA
+// Service worker registration for PWA
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/service-worker.js')
     .then(() => console.log('Service Worker Registered'))
